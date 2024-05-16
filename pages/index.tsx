@@ -1,8 +1,8 @@
 import GameCard from '@/components/GameCard'
 import { GameCardStruct, GameStruct, ScoreStruct } from '@/utils/type.dt'
 import { NextPage } from 'next'
-import Link from 'next/link'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useState } from 'react'
 import {
   GiAngelWings,
@@ -12,7 +12,6 @@ import {
   GiShieldBounces,
   GiSpartanHelmet,
 } from 'react-icons/gi'
-import { toast } from 'react-toastify'
 import { useAccount } from 'wagmi'
 
 const uniqueCardElements: GameCardStruct[] = [
@@ -66,7 +65,7 @@ interface PageComponents {
   scoresData: ScoreStruct[]
 }
 
-const Page: NextPage<PageComponents> = ({ gameData, playerAddresses, scoresData }) => {
+const Page: NextPage<PageComponents> = () => {
   const { address } = useAccount()
   const [flipCount, setFlipCount] = useState<number>(0)
   const [player, setPlayer] = useState<ScoreStruct | null>(null)
@@ -95,6 +94,8 @@ const Page: NextPage<PageComponents> = ({ gameData, playerAddresses, scoresData 
     })
 
     setFlipCount(flipCount + 1)
+    console.log(flipCount,)
+    
 
     setOpenCards((prevOpenCards) => {
       const newOpenCards = [...prevOpenCards, cards.find((card) => card.id === id)!]
@@ -125,22 +126,6 @@ const Page: NextPage<PageComponents> = ({ gameData, playerAddresses, scoresData 
     })
   }
 
-  const handleSubmit = async () => {
-    if (!address) return toast.warning('Connect wallet first!')
-    if (!player) return toast.warning('Player data not found')
-
-    await toast.promise(
-      new Promise<void>((resolve, reject) => {
-        // ...
-      }),
-      {
-        pending: 'Approve transaction...',
-        success: 'Score saved successfully 👌',
-        error: 'Encountered error 🤯',
-      }
-    )
-  }
-
   const resetGame = () => {
     setCards(
       shuffleCards(
@@ -155,12 +140,13 @@ const Page: NextPage<PageComponents> = ({ gameData, playerAddresses, scoresData 
     setOpenCards([])
     setFlipCount(0)
     setAllCardsFlipped(false)
+    console.log('flipCount reset')
   }
 
   return (
     <div>
       <Head>
-        <title>Play2Earn | {gameData?.title}</title>
+        <title>GameplayOnly</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -190,15 +176,6 @@ const Page: NextPage<PageComponents> = ({ gameData, playerAddresses, scoresData 
             Reset Game
           </button>
 
-          <button
-              onClick={handleSubmit}
-              className="bg-transparent border border-green-700 hover:bg-green-800
-              py-2 px-6 text-green-700 hover:text-white rounded-full
-              transition duration-300 ease-in-out"
-            >
-              Submit Game
-            </button>
-
             <Link
             href={''}
             className="bg-transparent border border-blue-700 hover:bg-blue-800
@@ -216,4 +193,3 @@ const Page: NextPage<PageComponents> = ({ gameData, playerAddresses, scoresData 
 }
 
 export default Page
-

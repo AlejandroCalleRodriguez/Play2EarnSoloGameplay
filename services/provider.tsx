@@ -7,12 +7,6 @@ import {
 } from '@rainbow-me/rainbowkit-siwe-next-auth'
 import { WagmiConfig, configureChains, createConfig } from 'wagmi'
 import { Chain, RainbowKitProvider, connectorsForWallets, darkTheme } from '@rainbow-me/rainbowkit'
-import {
-  metaMaskWallet,
-  trustWallet,
-  coinbaseWallet,
-  rainbowWallet,
-} from '@rainbow-me/rainbowkit/wallets'
 import { mainnet, hardhat } from 'wagmi/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
@@ -48,21 +42,8 @@ const { chains, publicClient } = configureChains(
 
 const projectId = process.env.NEXT_PUBLIC_PROJECT_ID as string
 
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Recommended',
-    wallets: [
-      metaMaskWallet({ projectId, chains }),
-      trustWallet({ projectId, chains }),
-      coinbaseWallet({ appName: 'Coinbase', chains }),
-      rainbowWallet({ projectId, chains }),
-    ],
-  },
-])
-
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors,
   publicClient,
 })
 
